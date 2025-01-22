@@ -18,8 +18,8 @@ executable hilo
   default-extension: OverloadedStrings
   build-depends:
     , base        ^>=4.20.0.0
-    , bytestring
-    , unix
+    , bytestring  ==0.11.5.3
+    , unix        ==2.8.6.0
 
   hs-source-dirs:    app
   default-language:  Haskell2010
