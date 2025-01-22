@@ -1,0 +1,23 @@
+cabal-version:   3.4
+name:            hilo
+version:         0.0.1
+license:         GPL-3.0-only
+license-file:    LICENSE
+author:          flyingsl0ths
+maintainer:      randomemail33110@protonmail.com
+category:        Text
+build-type:      Simple
+extra-doc-files: CHANGELOG.md
+
+common warnings
+  ghc-options: -Wall
+
+executable hilo
+  import:           warnings
+  main-is:          Main.hs
+  build-depends:
+    , base  ^>=4.20.0.0
+    , unix
+
+  hs-source-dirs:   app
+  default-language: Haskell2010
