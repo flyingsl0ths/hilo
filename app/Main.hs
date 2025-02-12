@@ -1,6 +1,5 @@
 module Main where
 
-import Control.Monad (when)
 import qualified Data.ByteString as BS
 import qualified Data.Word as DW
 import qualified System.Posix.ByteString as PSB
@@ -33,8 +32,6 @@ main =
       PSB.fdRead
         PSB.stdInput
         1
-
-    when (BS.null bs) main
 
     if BS.head bs == charToWord8 'q'
       then leaveRawMode origin
