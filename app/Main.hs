@@ -6,23 +6,40 @@ import qualified Data.ByteString as BS
 import qualified Data.Word as DW
 import qualified System.Posix.ByteString as PSB
 
+import qualified System.Posix.Terminal as PT
+
 firstOf :: BS.ByteString -> Maybe DW.Word8
 firstOf = maybe Nothing (Just . fst) . BS.uncons
 
 charToWord8 :: Char -> DW.Word8
 charToWord8 = toEnum . fromEnum
 
+enterRawMode :: IO PT.TerminalAttributes
+enterRawMode =
+  do
+    attrs <- PT.getTerminalAttributes PSB.stdInput
+    let attrs' = foldl PT.withoutMode attrs [PT.EnableEcho, PT.ProcessInput]
+    PT.setTerminalAttributes PSB.stdInput attrs' PT.WhenFlushed
+    return attrs
+
+leaveRawMode :: PT.TerminalAttributes -> IO ()
+leaveRawMode origin = PT.setTerminalAttributes PSB.stdInput origin PT.WhenFlushed
+
 main :: IO ()
-main = read'
- where
-  read' =
-    do
-      bs <-
-        PSB.fdRead
-          PSB.stdInput
-          1
-      case firstOf bs of
-        Just q
-          | q == charToWord8 'q' -> return ()
-          | otherwise -> read'
-        _ -> read'
+main =
+  do
+    origin <- PT.getTerminalAttributes PSB.stdInput
+    _ <- enterRawMode
+
+    bs <-
+      PSB.fdRead
+        PSB.stdInput
+        1
+    case firstOf bs of
+      Just q
+        | q == charToWord8 'q' ->
+            do
+              leaveRawMode origin
+              return ()
+        | otherwise -> main
+      _ -> main
