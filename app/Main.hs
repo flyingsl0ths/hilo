@@ -1,9 +1,9 @@
 module Main where
 
+import Control.Monad (when)
 import qualified Data.ByteString as BS
 import qualified Data.Word as DW
 import qualified System.Posix.ByteString as PSB
-
 import qualified System.Posix.Terminal as PT
 
 firstOf :: BS.ByteString -> Maybe DW.Word8
@@ -33,11 +33,9 @@ main =
       PSB.fdRead
         PSB.stdInput
         1
-    case firstOf bs of
-      Just q
-        | q == charToWord8 'q' ->
-            do
-              leaveRawMode origin
-              return ()
-        | otherwise -> main
-      _ -> main
+
+    when (BS.null bs) main
+
+    if BS.head bs == charToWord8 'q'
+      then leaveRawMode origin
+      else main
