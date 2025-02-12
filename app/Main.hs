@@ -5,9 +5,6 @@ import qualified Data.Word as DW
 import qualified System.Posix.ByteString as PSB
 import qualified System.Posix.Terminal as PT
 
-firstOf :: BS.ByteString -> Maybe DW.Word8
-firstOf = maybe Nothing (Just . fst) . BS.uncons
-
 charToWord8 :: Char -> DW.Word8
 charToWord8 = toEnum . fromEnum
 
