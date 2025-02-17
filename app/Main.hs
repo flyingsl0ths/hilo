@@ -42,7 +42,7 @@ initEditor :: IO EditorState
 initEditor =
     do
         origin <- PT.getTerminalAttributes PSB.stdInput
-        _ <- liftIO $ enterRawMode
+        _ <- enterRawMode
         return EditorState {originTermAttrs = origin}
 
 runEditor :: EditorM ()
