@@ -1,10 +1,10 @@
 module Main where
 
-import Control.Monad.State
-import qualified Data.ByteString as BS
-import qualified Data.Word as DW
+import           Control.Monad.State
+import qualified Data.ByteString         as BS
+import qualified Data.Word               as DW
 import qualified System.Posix.ByteString as PSB
-import qualified System.Posix.Terminal as PT
+import qualified System.Posix.Terminal   as PT
 
 charToWord8 :: Char -> DW.Word8
 charToWord8 = toEnum . fromEnum
