@@ -29,14 +29,15 @@ enterRawMode =
 deinitEditor :: EditorM ()
 deinitEditor =
     do
-        origin <- gets originTermAttrs
+        origin <- get
         liftIO $ leaveRawMode origin
+        return ()
   where
-    leaveRawMode origin' =
-        PT.setTerminalAttributes
-            PSB.stdInput
-            origin'
-            PT.WhenFlushed
+    leaveRawMode (EditorState origin) =
+          liftIO $ PT.setTerminalAttributes
+              PSB.stdInput
+              origin
+              PT.WhenFlushed
 
 initEditor :: IO EditorState
 initEditor =
